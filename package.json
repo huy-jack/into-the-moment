@@ -1,0 +1,45 @@
+{
+  "name": "character-swap",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "job:report": "tsx --env-file-if-exists=.env.local scripts/job-report.ts",
+    "db:migrate": "tsx --env-file-if-exists=.env.local scripts/db-migrate.ts",
+    "harness": "tsx --env-file-if-exists=.env.local scripts/harness.ts",
+    "calibrate": "tsx --env-file-if-exists=.env.local scripts/calibrate.ts",
+    "smoke": "tsx --env-file-if-exists=.env.local scripts/smoke-live.ts",
+    "vision-check": "tsx --env-file-if-exists=.env.local scripts/vision-check.ts",
+    "photos": "tsx scripts/fetch-photos.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-rekognition": "^3.1153.0",
+    "@google/genai": "^2.30.0",
+    "@mediapipe/tasks-vision": "1.1.1",
+    "@neondatabase/serverless": "^1.2.0",
+    "@vercel/blob": "^2.8.2",
+    "drizzle-orm": "^0.45.4",
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sharp": "^0.35.5",
+    "workflow": "^5.2.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.0.5"
+  }
+}

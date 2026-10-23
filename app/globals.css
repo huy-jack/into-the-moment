@@ -1,0 +1,217 @@
+:root {
+  --ground: #f1edf8;
+  --tile: #ffffff;
+  --ink: #16131c;
+  --ink-2: #3a3446;
+  --soft: #5f586b;
+  --line: #e4dcf3;
+  --well: #ece6fb;
+  --violet: #7c5cd6;
+  --violet-deep: #5b3fb8;
+  --violet-50: #ece6fb;
+  --violet-200: #b9a6ee;
+  --on-violet: #ffffff;
+  --focus-lock: #c6a8ff;
+  --ok: #1a6e3f;
+  --bad: #b42318;
+  --dash: #cfc2ea;
+  /* The aurora behind every screen: violet, pink and peach clouds. Each stays light enough for --soft text at 4.5:1 or more */
+  --aurora-1: #e0d5fd;
+  --aurora-2: #f9d3ee;
+  --aurora-3: #ffd8bd;
+  /* The art: a violet panel lit from the top right, and display words in a violet sweep */
+  --panel: linear-gradient(205deg, #a68ef0 0%, #8366df 38%, #6646cc 72%, #5638bd 100%);
+  --word: linear-gradient(100deg, #5b3fb8 0%, #7c5cd6 45%, #a77cf0 100%);
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  /* Neutral ink shadows, soft and wide; never a violet glow */
+  --shadow-card: 0 1px 0 rgb(22 19 28 / 0.04), 0 30px 60px -36px rgb(22 19 28 / 0.28);
+  --shadow-lift: 0 1px 0 rgb(22 19 28 / 0.05), 0 34px 60px -32px rgb(22 19 28 / 0.32);
+  --shadow-sticker: 0 20px 40px -20px rgb(22 19 28 / 0.45);
+  --r-big: 36px;
+  --r-panel: 28px;
+  --r-card: 24px;
+  --r-tile: 20px;
+  --r-photo: 14px;
+  --r-pill: 999px;
+  --measure: 58ch;
+  --gutter: clamp(16px, 5vw, 96px);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--violet);
+  color: var(--on-violet);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+input {
+  caret-color: var(--violet);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(32px, 3.4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Hero motion values. Registered, so keyframes can move them smoothly. */
+@property --fy {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --sway {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --gx {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 56%;
+}
+
+@property --gy {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 30%;
+}
+
+/* The aurora: three soft clouds drift behind every screen, 18 to 26 s per sweep */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora i {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.aurora i:nth-child(1) {
+  left: -14%;
+  top: -22%;
+  width: min(1000px, 110vw);
+  height: min(760px, 84vw);
+  background: radial-gradient(closest-side, var(--aurora-1) 30%, transparent);
+  animation: aurora1 18s ease-in-out infinite alternate;
+}
+
+.aurora i:nth-child(2) {
+  right: -12%;
+  top: -14%;
+  width: min(920px, 100vw);
+  height: min(720px, 80vw);
+  background: radial-gradient(closest-side, var(--aurora-2) 30%, transparent);
+  animation: aurora2 22s ease-in-out infinite alternate;
+}
+
+.aurora i:nth-child(3) {
+  left: 28%;
+  top: 8%;
+  width: min(840px, 90vw);
+  height: min(640px, 70vw);
+  background: radial-gradient(closest-side, var(--aurora-3) 20%, transparent);
+  opacity: 0.6;
+  animation: aurora3 26s ease-in-out infinite alternate;
+}
+
+.aurora::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+}
+
+@keyframes aurora1 {
+  to {
+    translate: 220px 140px;
+    scale: 1.15;
+  }
+}
+
+@keyframes aurora2 {
+  to {
+    translate: -260px 120px;
+    scale: 0.9;
+  }
+}
+
+@keyframes aurora3 {
+  to {
+    translate: 160px -90px;
+    scale: 1.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora i:nth-child(n) {
+    animation: none;
+  }
+}

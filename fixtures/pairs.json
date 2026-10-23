@@ -1,0 +1,8 @@
+[
+  { "id": "c1", "case": "1", "template": "fixtures/photos/templates/man-action.jpg", "users": ["fixtures/photos/man-a/1.jpg", "fixtures/photos/man-a/2.jpg", "fixtures/photos/man-a/3.jpg"] },
+  { "id": "c2-mf", "case": "2-mf", "template": "fixtures/photos/templates/man-action.jpg", "users": ["fixtures/photos/woman-a/1.jpg", "fixtures/photos/woman-a/2.jpg", "fixtures/photos/woman-a/3.jpg"] },
+  { "id": "c2-fm", "case": "2-fm", "template": "fixtures/photos/templates/woman-action.jpg", "users": ["fixtures/photos/man-a/1.jpg", "fixtures/photos/man-a/2.jpg", "fixtures/photos/man-a/3.jpg"] },
+  { "id": "c3-ac", "case": "3-ac", "template": "fixtures/photos/templates/adult-action.jpg", "users": ["fixtures/photos/child-a/1.jpg", "fixtures/photos/child-a/2.jpg"] },
+  { "id": "c3-ca", "case": "3-ca", "template": "fixtures/photos/templates/child-action.jpg", "users": ["fixtures/photos/man-b/1.jpg", "fixtures/photos/man-b/2.jpg", "fixtures/photos/man-b/3.jpg"] },
+  { "id": "wide", "case": "wide-shot", "template": "fixtures/photos/templates/wide-shot.jpg", "users": ["fixtures/photos/woman-a/1.jpg", "fixtures/photos/woman-a/2.jpg", "fixtures/photos/woman-a/3.jpg"] }
+]

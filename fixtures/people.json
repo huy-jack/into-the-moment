@@ -1,0 +1,5 @@
+[
+  { "name": "man-a", "photos": ["fixtures/photos/man-a/1.jpg", "fixtures/photos/man-a/2.jpg", "fixtures/photos/man-a/3.jpg"] },
+  { "name": "woman-a", "photos": ["fixtures/photos/woman-a/1.jpg", "fixtures/photos/woman-a/2.jpg", "fixtures/photos/woman-a/3.jpg"] },
+  { "name": "man-b", "photos": ["fixtures/photos/man-b/1.jpg", "fixtures/photos/man-b/2.jpg", "fixtures/photos/man-b/3.jpg"] }
+]

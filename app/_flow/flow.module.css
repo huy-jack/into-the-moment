@@ -1,0 +1,3422 @@
+/* Cut-out · Violet: white cards and violet gradient panels; photos sit in white frames, never on bare violet. */
+
+.shell {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 96px;
+}
+
+.loading {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+}
+
+/* Top bar: name left, step control or a stage phrase right */
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 16px;
+  padding-top: 24px;
+  font-size: 15px;
+}
+
+.headRight {
+  display: flex;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.logOut {
+  border: 0;
+  padding: 6px 2px;
+  background: none;
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.logOut:hover {
+  color: var(--ink);
+}
+
+.brand {
+  display: inline-flex;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+span.brand {
+  cursor: default;
+}
+
+.guide {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+/* Segmented control: a white thumb slides to the current step; done steps are buttons back to them */
+.steps {
+  position: relative;
+  display: flex;
+  padding: 3px;
+  border-radius: var(--r-pill);
+  background: var(--well);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--soft);
+}
+
+.steps ol {
+  list-style: none;
+  position: relative;
+  display: flex;
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: 0;
+  border-radius: var(--r-pill);
+  background: var(--tile);
+  transition: left 380ms cubic-bezier(0.16, 1, 0.3, 1), width 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  white-space: nowrap;
+  transition: color 200ms var(--ease-out);
+}
+
+.steps li[aria-current='step'],
+.stepDone {
+  color: var(--ink);
+}
+
+.stepDone button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.stepDone button:hover {
+  color: var(--violet);
+}
+
+.stepDone .icon {
+  width: 15px;
+  height: 15px;
+  color: var(--violet);
+}
+
+/* Page grid: text column and the photo board */
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 600px) minmax(0, 1fr);
+  grid-template-areas:
+    'title board'
+    'text board'
+    'more board'
+    'actions board';
+  grid-template-rows: auto auto auto 1fr;
+  column-gap: clamp(28px, 4vw, 56px);
+  margin-top: 48px;
+  animation: rise 320ms var(--ease-out);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(12px);
+  }
+}
+
+.title {
+  grid-area: title;
+}
+
+.text {
+  grid-area: text;
+  min-width: 0;
+}
+
+.more {
+  grid-area: more;
+  min-width: 0;
+}
+
+.board {
+  grid-area: board;
+  min-width: 0;
+  align-self: start;
+}
+
+/* Mat-frame card: white, a soft warm shadow, photos inset so their edge only touches white */
+.page > .board {
+  background: var(--tile);
+  border-radius: var(--r-card);
+  padding: clamp(12px, 1.6vw, 20px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Folder tab on top of a card: names the version or the problem */
+.tab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  max-width: calc(100% - 24px);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 14px 14px 0 0;
+  background: var(--tile);
+  color: var(--violet);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: visible;
+  --tc: var(--tile);
+}
+
+/* The inner curve where the tab meets the card */
+.tab::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 100% 0, transparent 11.5px, var(--tc) 12px);
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+  align-self: start;
+}
+
+.lede {
+  margin-top: 16px;
+  max-width: var(--measure);
+  color: var(--ink-2);
+}
+
+.help {
+  margin-top: 12px;
+  max-width: var(--measure);
+  color: var(--soft);
+  font-size: 15px;
+}
+
+.error {
+  margin-top: 12px;
+  max-width: var(--measure);
+  color: var(--bad);
+  font-weight: 600;
+}
+
+.notice {
+  margin-top: 20px;
+  padding: 12px 18px;
+  border-radius: var(--r-photo);
+  background: var(--tile);
+  box-shadow: var(--shadow-card);
+  color: var(--bad);
+  font-weight: 600;
+}
+
+.tips {
+  margin: 20px 0 0 22px;
+  line-height: 1.9;
+}
+
+.tips li::marker {
+  font-weight: 800;
+}
+
+/* Buttons: pills. Ink is the forward action, white is everything else. The icon sits in its own round chip. */
+.btn,
+.btnLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out, transform 140ms ease-out;
+}
+
+.btn {
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn:has(.icon) {
+  padding-right: 6px;
+}
+
+.btnLine:has(.icon) {
+  padding-left: 6px;
+}
+
+.btn .icon,
+.btnLine .icon {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.6);
+  color: #fff;
+}
+
+.btnLine .icon {
+  box-shadow: none;
+  background: var(--well);
+  color: var(--ink);
+}
+
+.btn:hover:not(:disabled) {
+  background: #2b2533;
+}
+
+/* The arrow leaves its chip and comes back in from the other side */
+.btn:hover:not(:disabled) .i_arrow path {
+  animation: slideThrough 440ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnLine:hover:not(:disabled) .i_back path {
+  animation: slideThrough 440ms cubic-bezier(0.16, 1, 0.3, 1) reverse;
+}
+
+@keyframes slideThrough {
+  0% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(18px);
+  }
+  46% {
+    transform: translateX(-18px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.btn:active:not(:disabled),
+.btnLine:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn:disabled,
+.btnLine:disabled {
+  background: var(--well);
+  color: var(--soft);
+  cursor: not-allowed;
+}
+
+.btn:disabled .icon {
+  background: var(--tile);
+  color: var(--soft);
+}
+
+.btnLine {
+  background: var(--tile);
+  color: var(--ink);
+  position: relative;
+}
+
+.btnLine:hover:not(:disabled) {
+  background: var(--line);
+}
+
+label.btnLine {
+  margin-top: 20px;
+}
+
+.btnLine:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.spaced {
+  margin-top: 24px;
+}
+
+.linkBtn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  color: var(--ink-2);
+}
+
+.linkBtn:hover {
+  color: var(--ink);
+}
+
+.icon {
+  flex: none;
+}
+
+/* Visually hidden file input inside a label: the label is the control */
+.file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* Photo tiles: a rounded photo with a one-line caption under it */
+.tile {
+  position: relative;
+  min-width: 0;
+}
+
+.tile figcaption {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+.photoFull,
+.photoCrop {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-photo);
+  background: var(--well);
+}
+
+.photoFull img {
+  width: 100%;
+  height: auto;
+  max-height: 72dvh;
+  object-fit: contain;
+}
+
+.photoCrop {
+  aspect-ratio: 1;
+}
+
+.photoCrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoFull img,
+.photoCrop img {
+  transition: filter 360ms ease-out, transform 360ms ease-out;
+}
+
+/* Upload in progress: the photo starts soft and grey and sharpens as --p goes from 0 to 1 */
+.developing {
+  filter: blur(calc((1 - var(--p)) * 14px)) saturate(calc(0.4 + var(--p) * 0.6));
+  transform: scale(calc(1.06 - var(--p) * 0.06));
+}
+
+/* Corner badge: a ring that fills while uploading, then a check or a cross */
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.92);
+}
+
+.badge svg {
+  width: 28px;
+  height: 28px;
+}
+
+.ring {
+  fill: none;
+  stroke: var(--violet);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 200ms linear;
+}
+
+.badgeOk,
+.badgeBad {
+  color: var(--tile);
+  animation: badgePop 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.badgeOk {
+  background: var(--ok);
+}
+
+.badgeBad {
+  background: var(--bad);
+}
+
+.badgeOk .icon,
+.badgeBad .icon {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes badgePop {
+  from {
+    transform: scale(0.5);
+  }
+}
+
+.tileSmall {
+  max-width: 300px;
+}
+
+.tileLarge .photoFull img {
+  max-height: 78dvh;
+}
+
+/* The best version: its caption is a dark pill. Same size as every other version. */
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  background: var(--violet);
+  color: var(--on-violet);
+  font-weight: 600;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+/* An empty photo: a grey well, with a slow light sweep while something is being made */
+.empty {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+}
+
+.photoCrop .empty {
+  aspect-ratio: auto;
+  height: 100%;
+}
+
+.emptyNote {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  max-width: 80%;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--soft);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .empty {
+    background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%) var(--well);
+    background-size: 250% 100%;
+    animation: sweep 2.2s ease-in-out infinite;
+  }
+}
+
+@keyframes sweep {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+/* Signature: an autofocus box on the face the browser found. Four corners drop in, overshoot, and blink once as focus locks. */
+.faceBox {
+  position: absolute;
+  pointer-events: none;
+  animation: afIn 520ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+.faceBox i {
+  position: absolute;
+  width: 24%;
+  height: 24%;
+  border: 2.5px solid var(--tile);
+  filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.5));
+  animation: afLock 520ms 520ms both;
+}
+
+.faceBox i:nth-child(1) {
+  left: 0;
+  top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 8px;
+}
+
+.faceBox i:nth-child(2) {
+  right: 0;
+  top: 0;
+  border-left: 0;
+  border-bottom: 0;
+  border-top-right-radius: 8px;
+}
+
+.faceBox i:nth-child(3) {
+  left: 0;
+  bottom: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom-left-radius: 8px;
+}
+
+.faceBox i:nth-child(4) {
+  right: 0;
+  bottom: 0;
+  border-left: 0;
+  border-top: 0;
+  border-bottom-right-radius: 8px;
+}
+
+@keyframes afIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes afLock {
+  30% {
+    border-color: var(--focus-lock);
+  }
+}
+
+/* Moment step: two choices, the hero's moment or the user's own photo */
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 10px 14px;
+  background: var(--tile);
+  border: 0;
+  border-radius: var(--r-tile);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--soft);
+  cursor: pointer;
+  transition: box-shadow 200ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.choice b {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.choice img,
+.choiceAdd {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+}
+
+.choice img {
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.choiceAdd {
+  display: grid;
+  place-items: center;
+  background: var(--well);
+  color: var(--violet-deep);
+}
+
+.choiceAdd .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.choice[aria-pressed='true'] {
+  box-shadow: 0 0 0 2px var(--violet), var(--shadow-card);
+}
+
+.choice:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .choice:hover {
+    box-shadow: var(--shadow-lift);
+  }
+
+  .choice[aria-pressed='true']:hover {
+    box-shadow: 0 0 0 2px var(--violet), var(--shadow-lift);
+  }
+}
+
+.choice:active {
+  transform: scale(0.99);
+}
+
+/* Status lines under a photo */
+.status {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.status .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.bad {
+  color: var(--bad);
+  font-weight: 600;
+}
+
+/* You step: photo slots */
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.slot .tile {
+  width: 100%;
+}
+
+/* The add control: an empty grey well with a plus, never a dashed drop zone */
+.addTile {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border-radius: var(--r-photo);
+}
+
+.addFace {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--r-photo);
+  background: var(--well);
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+  transition: background-color 160ms ease-out;
+}
+
+.addFace .icon {
+  width: 28px;
+  height: 28px;
+}
+
+.addTile:hover .addFace {
+  background: var(--line);
+}
+
+.addTile:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.addCaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+/* Waiting */
+.elapsed {
+  margin-top: 24px;
+  font-size: 17px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin-right: 6px;
+}
+
+/* Single-column pages: failure, can't open */
+.solo {
+  max-width: 640px;
+  margin-top: 64px;
+  animation: rise 320ms var(--ease-out);
+}
+
+.codeForm {
+  margin-top: 36px;
+}
+
+.codeForm label {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.codeRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.codeRow input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--tile);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 17px;
+  letter-spacing: 0.04em;
+}
+
+.codeRow input[aria-invalid='true'] {
+  box-shadow: inset 0 0 0 2px var(--bad);
+}
+
+.actionsInline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+/* Result */
+.result {
+  margin-top: 48px;
+  animation: rise 320ms var(--ease-out);
+}
+
+.resultHead {
+  max-width: 760px;
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 150px));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.inputs .tile {
+  padding: 6px 6px 2px;
+  border-radius: 18px;
+  background: var(--tile);
+  box-shadow: var(--shadow-card);
+}
+
+.inputs .tile figcaption {
+  margin: 4px 4px 2px;
+}
+
+/* Every version at the same size, best first: each one a mat card under its own tab */
+.versions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 24px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+.version {
+  position: relative;
+  min-width: 0;
+  padding-top: 30px;
+}
+
+.versionBest .tab {
+  background: var(--violet);
+  color: var(--on-violet);
+  --tc: var(--violet);
+}
+
+.versionCard {
+  padding: 10px 10px 14px;
+  border-radius: var(--r-card);
+  border-top-left-radius: 0;
+  background: var(--tile);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 200ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .versionCard:hover {
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* The tab carries the caption; the figure keeps it for screen readers only */
+.versionCard .tile figcaption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.versionCard > :not(:first-child) {
+  margin-inline: 6px;
+}
+
+.versionCard > .notes {
+  margin-left: 24px;
+}
+
+.versions .empty {
+  aspect-ratio: 4 / 3;
+}
+
+.failedTiles {
+  margin-top: 36px;
+  max-width: 520px;
+}
+
+.notes {
+  margin: 10px 0 0 18px;
+  font-size: 15px;
+  color: var(--bad);
+  font-weight: 600;
+}
+
+.versionActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.versionActions .btnLine {
+  background: var(--well);
+  min-height: 44px;
+  font-size: 15px;
+  padding: 0 18px;
+}
+
+.versionActions .btnLine:hover {
+  background: var(--line);
+}
+
+.fix {
+  margin-top: 56px;
+}
+
+.fixRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.fixBtn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 30px;
+  padding: 16px 20px 18px;
+  min-height: 52px;
+  background: var(--tile);
+  border: 0;
+  border-radius: var(--r-card);
+  border-top-left-radius: 0;
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 200ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.fixBtn .tab {
+  top: -30px;
+}
+
+.fixBtn strong {
+  font-weight: 800;
+}
+
+.fixBtn > span:last-child {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--soft);
+}
+
+.fixBtn:hover:not(:disabled) {
+  box-shadow: var(--shadow-lift);
+}
+
+.fixBtn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.fixBtn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* Wait screen: the current stage name carries a soft shimmer (the "thinking" convention, no colour) */
+.shimmer {
+  background: linear-gradient(90deg, var(--ink) 0 38%, #b0708c 50%, var(--ink) 62% 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+
+/* Stage cards: done is white with a check, the current one is pale violet with a running bar, next is a dashed outline */
+.ledger {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+  max-width: 440px;
+}
+
+.ledger li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  border: 1.5px dashed var(--dash);
+  color: var(--soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.ledger .done {
+  border-color: transparent;
+  background: var(--tile);
+  box-shadow: var(--shadow-card);
+  color: var(--ink-2);
+}
+
+.ledger .done > span:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: -2px;
+  background: var(--ok);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.ledger .now {
+  border-color: transparent;
+  background: var(--violet-50);
+  color: var(--violet);
+  font-weight: 800;
+}
+
+.ledger .now::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--violet);
+  animation: run 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes run {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(340%);
+  }
+}
+
+.ledgerAt {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Wait: one tile, no wider than a phone photo */
+.page > .waitBoard {
+  max-width: 480px;
+}
+
+/* Wait: the moment, out of focus; each finished stage brings it closer to sharp */
+.photoFull .focusPull {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  filter: blur(var(--b, 22px)) saturate(0.5);
+  transform: scale(1.12);
+  transition: filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.focusPull ~ .emptyNote {
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: rgb(255 255 255 / 0.86);
+  color: var(--ink);
+}
+
+/* Result: the wait's blur finishes here. Each version pulls into focus 160 ms after the one before, then the pill pops on the best. */
+.reveal .version {
+  animation: fadeUp 500ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 160ms);
+}
+
+.reveal .photoFull > img:first-child {
+  animation: pull 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 160ms);
+}
+
+.reveal .pill {
+  animation: pop 420ms cubic-bezier(0.16, 1, 0.3, 1) 950ms both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes pull {
+  from {
+    filter: blur(18px) saturate(0.5) brightness(1.1);
+    transform: scale(1.06);
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.06);
+  }
+}
+
+/* Text for screen readers only */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.chosen {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--violet);
+}
+
+.chosen .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tileLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--r-photo);
+}
+
+.tileLink:hover img {
+  opacity: 0.9;
+}
+
+/* Step 2: three small example photos, the good one first */
+.examples {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+  max-width: 420px;
+}
+
+.examples li {
+  display: flex;
+}
+
+.example {
+  flex: 1;
+  padding: 6px 6px 8px;
+  border-radius: 18px;
+  background: var(--tile);
+  box-shadow: var(--shadow-card);
+}
+
+.example img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.example figcaption {
+  margin-top: 6px;
+  padding: 0 2px;
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.example .notThis {
+  color: var(--bad);
+}
+
+.phoneOnly {
+  display: none;
+}
+
+/* Press and hold a version to see the moment in the same frame */
+.hold {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  border-radius: var(--r-photo);
+}
+
+.hold img {
+  pointer-events: none;
+}
+
+.hold:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.holdMoment {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--well);
+}
+
+.holdMoment[hidden] {
+  display: none;
+}
+
+/* Face close-up pair under each version: your face and its face, same size, eyes on one line */
+.detail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cropImg {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  background-color: var(--well);
+}
+
+.crop figcaption {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Versions from before a quick fix stay on the page, under the new ones */
+.before {
+  margin-top: 48px;
+}
+
+/* Small laptops and tablets: give the photos half the page so they stay judgeable */
+@media (min-width: 821px) and (max-width: 1199px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* Phone: one column; the step control takes its own row; a sticky pill bar holds the actions */
+@media (max-width: 820px) {
+  .head {
+    padding-top: 16px;
+  }
+
+  .steps {
+    width: 100%;
+  }
+
+  .steps ol {
+    flex: 1;
+  }
+
+  .steps li {
+    flex: auto;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'title'
+      'board'
+      'text'
+      'more'
+      'actions';
+    grid-template-rows: auto;
+    margin-top: 28px;
+  }
+
+  .textFirst {
+    grid-template-areas:
+      'title'
+      'text'
+      'board'
+      'more'
+      'actions';
+  }
+
+  .board {
+    margin-top: 20px;
+  }
+
+  .grid2 {
+    gap: 10px;
+  }
+
+  .emptyOnPhone {
+    display: none;
+  }
+
+  .actions {
+    position: sticky;
+    bottom: 0;
+    margin: 24px calc(var(--gutter) * -1) 0;
+    padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+    background: var(--ground);
+    border-top: 1px solid var(--line);
+    z-index: 2;
+  }
+
+  .actions .btn {
+    flex: 1;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .tileSmall {
+    max-width: none;
+  }
+
+  .solo {
+    margin-top: 40px;
+  }
+
+  .codeRow {
+    flex-direction: column;
+  }
+
+  .codeRow .btn {
+    justify-content: center;
+  }
+
+  .result {
+    margin-top: 28px;
+  }
+
+  /* Result: inputs as a strip of 3 small thumbnails, so the result starts high */
+  .inputs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .versions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fixRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .phoneOnly {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .solo,
+  .result,
+  .faceBox,
+  .faceBox i,
+  .badgeOk,
+  .badgeBad,
+  .reveal .version,
+  .reveal .photoFull > img:first-child,
+  .reveal .pill,
+  .btn:hover .i_arrow path,
+  .btnLine:hover .i_back path {
+    animation: none;
+  }
+
+  .thumb,
+  .focusPull,
+  .developing,
+  .versionCard,
+  .fixBtn,
+  .choice {
+    transition: none;
+    transform: none !important;
+  }
+
+  .developing {
+    transform: none;
+  }
+
+  .shimmer {
+    animation: none;
+    background: none;
+    color: var(--ink);
+  }
+
+  .ledger .now::after {
+    animation: none;
+    width: 100%;
+  }
+}
+
+/* Arrow chip that turns into the hunting logo while the action starts */
+.chipMark {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--on-violet);
+}
+
+/* Wait tile: the hunting logo in white over the blurred moment, the stage name at the foot */
+.waitMark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: flex;
+}
+
+.photoFull .waitNote {
+  top: auto;
+  bottom: 16px;
+  translate: -50% 0;
+}
+
+.fixTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Spotlight: a soft violet light and edge glow follow the pointer across a fix card (no photos in these cards) */
+.fixBtn::before,
+.fixBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.fixBtn::before {
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgb(194 24 91 / 0.1), transparent 60%);
+}
+
+.fixBtn::after {
+  padding: 1.5px;
+  background: radial-gradient(160px circle at var(--mx, 50%) var(--my, 50%), var(--violet), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@media (hover: hover) {
+  .fixBtn:hover:not(:disabled)::before,
+  .fixBtn:hover:not(:disabled)::after {
+    opacity: 1;
+  }
+}
+
+/* Full-size viewer: one photo on a dark neutral ground, thumbnails to switch, a short focus pull on change */
+.viewer {
+  width: min(1100px, 100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 14px;
+  border: 0;
+  border-radius: var(--r-card);
+  background: #1e1a1c;
+  color: var(--tile);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+}
+
+.viewer:not([open]) {
+  display: none;
+}
+
+.viewer::backdrop {
+  background: rgb(34 26 29 / 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.viewerTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.viewerCap {
+  padding: 3px 12px;
+  border-radius: var(--r-pill);
+  background: rgb(255 255 255 / 0.12);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewerBest {
+  background: var(--violet);
+}
+
+.viewerLink {
+  margin-left: auto;
+  font-size: 14px;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.viewerClose,
+.viewerNav {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.12);
+  color: var(--tile);
+  cursor: pointer;
+}
+
+.viewerClose:hover,
+.viewerNav:hover {
+  background: rgb(255 255 255 / 0.22);
+}
+
+.viewerClose:focus-visible,
+.viewerNav:focus-visible,
+.viewerThumbs button:focus-visible,
+.viewerLink:focus-visible {
+  outline-color: var(--tile);
+}
+
+.viewerStage {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.viewerStage img {
+  max-width: 100%;
+  max-height: calc(100dvh - 210px);
+  object-fit: contain;
+  border-radius: var(--r-photo);
+  animation: viewIn 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes viewIn {
+  from {
+    filter: blur(10px);
+    opacity: 0.4;
+    transform: scale(1.02);
+  }
+}
+
+.viewerNav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.viewerPrev {
+  left: 8px;
+}
+
+.viewerNext {
+  right: 8px;
+}
+
+.viewerThumbs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px;
+}
+
+.viewerThumbs button {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  padding: 3px;
+  border: 0;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.1);
+  cursor: pointer;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.viewerThumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0.55;
+}
+
+.viewerThumbs button[aria-pressed='true'] {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 2px var(--violet);
+}
+
+.viewerThumbs button[aria-pressed='true'] img {
+  opacity: 1;
+}
+
+@media (max-width: 820px) {
+  .viewer {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+    padding: calc(10px + env(safe-area-inset-top)) 10px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .viewerStage img {
+    max-height: calc(100dvh - 190px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewerStage img {
+    animation: none;
+  }
+}
+
+/* Steps 2 and 3: the moment as a small reference row at the top of the photo card */
+.momentRef {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.momentRef img {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.momentText {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  line-height: 1.35;
+}
+
+.momentText span {
+  font-size: 13px;
+  color: var(--soft);
+}
+
+.momentText strong {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.boardLabel {
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.boardLabel span {
+  font-weight: 400;
+  color: var(--soft);
+}
+
+/* Remove: a round button in the photo's top-left corner, like deleting in a photo library */
+.removeBtn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.92);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out, transform 140ms ease-out;
+}
+
+.removeBtn .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.removeBtn:hover {
+  background: var(--tile);
+  color: var(--bad);
+}
+
+.removeBtn:active {
+  transform: scale(0.92);
+}
+
+/* A larger touch area on phones without a bigger circle */
+.removeBtn::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+/* ===== Result as a photo studio: one large photo with a filmstrip, one side panel ===== */
+.studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: 24px;
+  margin-top: 28px;
+  align-items: start;
+}
+
+.stage,
+.panel {
+  border-radius: var(--r-card);
+  background: var(--tile);
+  box-shadow: var(--shadow-card);
+}
+
+.stage {
+  padding: 12px;
+  min-width: 0;
+}
+
+.stageTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Two-part switch: this version or the moment, in the same frame */
+.segment {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: var(--r-pill);
+  background: var(--well);
+}
+
+.segment button {
+  min-height: 38px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--soft);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
+}
+
+.segment button[aria-pressed='true'] {
+  background: var(--tile);
+  color: var(--ink);
+}
+
+.roundBtn {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--well);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.roundBtn:hover {
+  background: var(--line);
+}
+
+.stagePhoto {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--r-photo);
+  background: var(--tile);
+  cursor: zoom-in;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.stagePhoto img {
+  /* Sized to the photo itself, so the rounded corners sit on the photo's real edges, not on empty margin */
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 68dvh;
+  border-radius: var(--r-photo);
+  pointer-events: none;
+  animation: pull 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagePhoto:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.stageTag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 3px 12px;
+  border-radius: var(--r-pill);
+  background: rgb(34 26 29 / 0.78);
+  color: var(--tile);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stageEmpty {
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 6px;
+  padding: 24px;
+  border-radius: var(--r-photo);
+  background: var(--well);
+  color: var(--soft);
+  text-align: center;
+}
+
+.stageEmpty strong {
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.stageEmpty span {
+  max-width: 36ch;
+  font-size: 15px;
+}
+
+/* Filmstrip: every version, same size; the one on stage gets a violet ring, the best a violet dot */
+.filmstrip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 2px;
+  scrollbar-width: thin;
+}
+
+.filmLabel {
+  align-self: center;
+  flex: none;
+  padding: 0 4px 0 10px;
+  border-left: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--soft);
+}
+
+.thumbBtn {
+  flex: none;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.thumbImg {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--well);
+  color: var(--soft);
+  transition: box-shadow 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.thumbImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbBtn[aria-pressed='true'] .thumbImg {
+  box-shadow: 0 0 0 2px var(--tile), 0 0 0 4px var(--violet);
+}
+
+.thumbBtn:hover .thumbImg {
+}
+
+.bestDot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 0 2px var(--tile);
+}
+
+.thumbCap {
+  max-width: 84px;
+  font-size: 12px;
+  color: var(--soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbBtn[aria-pressed='true'] .thumbCap {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Side panel: everything about the version on stage, in reading order */
+.panel {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+  position: sticky;
+  top: 16px;
+  min-width: 0;
+}
+
+.panelHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.panelHead h2 {
+  font-size: 22px;
+}
+
+.panelHead .pill {
+  font-size: 13px;
+  padding: 3px 12px;
+  animation: pop 420ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
+}
+
+.panel .notes {
+  margin: 0 0 0 18px;
+}
+
+.panel .detail {
+  margin-top: 8px;
+}
+
+.detailLabel {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.saveRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.panel .help {
+  margin-top: 0;
+}
+
+.fixList {
+  display: grid;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.fixList h3 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.fixList .help {
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+/* A fix is a row with a verb and an arrow: clearly a button, one tap starts a new photo */
+.fixItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 12px 12px 16px;
+  border: 1.5px solid var(--violet-200);
+  border-radius: 16px;
+  background: var(--tile);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, transform 140ms ease-out;
+}
+
+.fixItem > span:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.fixItem strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fixItem > span:first-child > span {
+  font-size: 13px;
+  color: var(--soft);
+}
+
+.fixChip {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--tile);
+  color: var(--violet);
+}
+
+.fixChip .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.fixItem:hover:not(:disabled) {
+  background: var(--violet-50);
+}
+
+.fixItem:hover:not(:disabled) .i_arrow path {
+  animation: slideThrough 440ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fixItem:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.fixItem:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+
+
+
+
+@media (max-width: 960px) {
+  .studio {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel {
+    position: static;
+  }
+}
+
+@media (max-width: 820px) {
+  .stage {
+    padding: 8px;
+  }
+
+  .stagePhoto img {
+    max-height: 62dvh;
+  }
+
+  .thumbImg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagePhoto img,
+  .panelHead .pill,
+  .fixItem:hover .i_arrow path {
+    animation: none;
+  }
+}
+
+/* ---------- The art layer: panel, brush strokes, sparkles, orbit, grain, stickers ---------- */
+
+.artDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* A violet panel lit from the top right. White text only in its lower-left half, where it is darkest. */
+.vpanel {
+  position: relative;
+  background: var(--panel);
+  border-radius: var(--r-panel);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.vpanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px 300px at 56% 30%, rgb(255 255 255 / 0.22), transparent 70%);
+  pointer-events: none;
+}
+
+.brush,
+.spark,
+.orbit {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.brush {
+  z-index: -1;
+}
+
+/* Film grain over a big card. Photos the user judges sit above it (z-index 2), so they stay untouched. */
+.grain {
+  position: relative;
+}
+
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background-image: var(--grain);
+  opacity: 0.09;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.clean {
+  position: relative;
+  z-index: 2;
+}
+
+/* A small white card that holds an input photo, tilted by --tilt */
+.sticker {
+  position: relative;
+  z-index: 2;
+  background: var(--tile);
+  border-radius: 22px;
+  padding: 10px;
+  box-shadow: var(--shadow-sticker);
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.sticker img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.stickerKey {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--violet-deep);
+}
+
+.hand {
+  font-family: var(--font-hand), cursive;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ---------- Hero: one result, the person breaking out of a violet panel ---------- */
+
+.gateMain {
+  margin-top: 20px;
+  animation: rise 320ms var(--ease-out);
+}
+
+/* The hero sits straight on the page ground: no card around it */
+.hero {
+  overflow: hidden;
+}
+
+.heroStage {
+  position: relative;
+  isolation: isolate;
+  height: 820px;
+}
+
+/* Display words sit behind the person, so raised arms can cross them */
+.heroWords {
+  position: absolute;
+  z-index: 1;
+  line-height: 1;
+}
+
+.heroWords span {
+  display: block;
+  font-style: italic;
+  font-weight: 900;
+  font-size: clamp(32px, 3.9vw, 56px);
+  letter-spacing: -0.035em;
+}
+
+.heroWords b {
+  display: block;
+  font-weight: 900;
+  font-size: clamp(72px, 9.2vw, 132px);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  background: var(--word);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.heroWordsL {
+  left: 32px;
+  top: 36px;
+}
+
+.heroWordsR {
+  right: 40px;
+  top: 78px;
+}
+
+.hero .phoneOnly {
+  display: none;
+}
+
+/* The panel's top edge runs under the chin, so the head breaks out above it */
+.heroPanel {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 440px;
+  z-index: 0;
+}
+
+.hero .orbit {
+  z-index: 2;
+}
+
+.heroPerson {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 0;
+  height: 772px;
+  width: auto;
+  max-width: none;
+  transform: translateX(-40%);
+  filter: drop-shadow(0 24px 24px rgb(22 19 28 / 0.22));
+}
+
+/* The copy sits in the panel's dark lower-left corner (#6646cc and darker: white text passes 6:1) */
+.heroCopy {
+  position: absolute;
+  z-index: 4;
+  left: 44px;
+  bottom: 32px;
+  width: 340px;
+  color: #fff;
+}
+
+.heroTag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.heroCopy h2 {
+  margin: 12px 0;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+}
+
+.heroLine {
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.heroCopy .codeForm {
+  margin-top: 20px;
+}
+
+.codeHelp {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+/* An error stays readable on violet: red text in a white box */
+.codeError {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--tile);
+  color: var(--bad);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.heroInputs .sticker {
+  position: absolute;
+  z-index: 4;
+}
+
+.heroInputs figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 6px 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.heroMoment {
+  right: 56px;
+  bottom: 184px;
+  width: 196px;
+}
+
+.heroMoment img {
+  height: 124px;
+  object-position: 50% 30%;
+}
+
+.heroYou {
+  right: 92px;
+  bottom: 44px;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.heroYou img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--violet-50);
+}
+
+.heroYou figcaption {
+  padding: 0;
+}
+
+.heroNote {
+  position: absolute;
+  z-index: 5;
+  right: 74px;
+  top: 300px;
+  color: var(--ink);
+  font-size: 30px;
+  transform: rotate(-4deg);
+}
+
+.heroNote svg {
+  position: absolute;
+  left: -40px;
+  top: 22px;
+  transform: scaleX(-1) rotate(10deg);
+}
+
+.heroProof {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: rgb(22 19 28 / 0.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Step 1: the result photo as it came out, uncropped, with its tag on top */
+.heroCompact {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.heroResult {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 560px;
+  border-radius: var(--r-photo);
+}
+
+.heroCompact .heroTag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: rgb(22 19 28 / 0.78);
+  color: #fff;
+  font-size: 14px;
+}
+
+@media (min-width: 821px) and (max-width: 1199px) {
+  .heroStage .heroPerson {
+    transform: translateX(-24%);
+  }
+
+  /* No room for both word blocks beside the person at this width */
+  .heroWordsR {
+    display: none;
+  }
+
+  .heroMoment {
+    width: 160px;
+    right: 28px;
+  }
+
+  .heroMoment img {
+    height: 100px;
+  }
+
+  .heroYou {
+    width: 210px;
+    right: 40px;
+  }
+
+  .heroCopy {
+    width: 300px;
+    left: 32px;
+  }
+
+  .heroCopy h2 {
+    font-size: 36px;
+  }
+
+  .heroNote {
+    display: none;
+  }
+}
+
+/* Phone: words, the person on a short panel, then the code, then the two inputs */
+@media (max-width: 820px) {
+  .hero {
+    overflow: visible;
+  }
+
+  .heroStage {
+    height: auto;
+    display: grid;
+    grid-template-areas: 'words' 'art' 'copy' 'inputs';
+  }
+
+  .heroWords {
+    grid-area: words;
+    position: static;
+    padding: 6px 6px 0;
+  }
+
+  .heroWords span {
+    font-size: 32px;
+  }
+
+  .heroWords b {
+    font-size: 66px;
+  }
+
+  .heroWordsR,
+  .hero .orbit,
+  .heroNote,
+  .heroProof,
+  .hero .spark {
+    display: none;
+  }
+
+  .hero .phoneOnly {
+    display: block;
+  }
+
+  .heroStage > .brush {
+    display: none;
+  }
+
+  /* The panel and the person share one grid cell, both on its bottom edge, so the person rises above the panel */
+  .heroStage .heroPanel {
+    grid-area: art;
+    align-self: end;
+    position: relative;
+    inset: auto;
+    height: 250px;
+  }
+
+  .heroStage .heroPanel .brush:nth-child(n + 4) {
+    display: none;
+  }
+
+  .heroStage .heroPerson {
+    grid-area: art;
+    align-self: end;
+    justify-self: center;
+    position: relative;
+    left: auto;
+    height: 320px;
+    transform: none;
+  }
+
+  .heroCopy {
+    grid-area: copy;
+    position: static;
+    width: auto;
+    padding: 18px 4px 4px;
+    color: var(--ink);
+  }
+
+  .heroCopy h2 {
+    font-size: 28px;
+    margin: 8px 0;
+  }
+
+  .heroLine,
+  .codeHelp {
+    color: var(--soft);
+  }
+
+  .heroTag {
+    color: var(--violet-deep);
+  }
+
+  .codeError {
+    padding: 0;
+    background: none;
+  }
+
+  .heroInputs {
+    grid-area: inputs;
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .heroInputs .sticker {
+    position: static;
+    flex: 1;
+    width: auto;
+    display: block;
+    padding: 8px;
+    background: var(--violet-50);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .heroInputs .sticker img {
+    width: 100%;
+    height: 90px;
+    border-radius: 12px;
+    box-shadow: none;
+    object-position: 50% 25%;
+  }
+
+  .heroInputs figcaption {
+    padding: 8px 4px 2px;
+    font-size: 14px;
+  }
+}
+
+/* Photo boards: a white sheet on a violet panel; strokes show in the panel's edge */
+.page > .panelBoard,
+.panelBoard {
+  background: var(--panel);
+  border-radius: var(--r-panel);
+  padding: 48px 22px 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.sheet {
+  position: relative;
+  z-index: 1;
+  background: var(--tile);
+  border-radius: 20px;
+  padding: clamp(12px, 1.6vw, 20px);
+}
+
+.failedBoard {
+  margin-top: 28px;
+}
+
+.failedBoard .failedTiles {
+  margin-top: 0;
+}
+
+/* A quiet highlight under the promise words */
+.marker {
+  background: linear-gradient(transparent 62%, var(--violet-50) 62%);
+  padding: 0 2px;
+}
+
+@media (max-width: 820px) {
+  .page > .panelBoard,
+  .panelBoard {
+    padding: 36px 12px 12px;
+    border-radius: 24px;
+  }
+}
+
+/* ---------- Result: the photo as a print on a violet panel, the inputs as stickers ---------- */
+
+.stage.vpanel {
+  padding: 20px;
+  border-radius: var(--r-panel);
+}
+
+/* A white print, tilted a little. The photo keeps its own shape: nothing is cropped. */
+.stagePhoto.print {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 8px auto 0;
+  padding: 12px 12px 44px;
+  border-radius: 8px;
+  background: var(--tile);
+  box-shadow: var(--shadow-sticker);
+  overflow: visible;
+  transform: rotate(-2deg);
+}
+
+.print img {
+  border-radius: 3px;
+}
+
+.printCap {
+  position: absolute;
+  left: 16px;
+  bottom: 10px;
+  font-size: 26px;
+  color: var(--ink);
+}
+
+.stageFoot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.vpanel .filmstrip {
+  margin-top: 0;
+}
+
+.vpanel .thumbCap,
+.vpanel .thumbBtn[aria-pressed='true'] .thumbCap {
+  color: #fff;
+}
+
+.vpanel .filmLabel {
+  color: #fff;
+  border-left-color: rgb(255 255 255 / 0.4);
+}
+
+.vpanel .thumbBtn[aria-pressed='true'] .thumbImg {
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.resSticker {
+  display: block;
+  width: 128px;
+  padding: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.resSticker img {
+  height: 86px;
+  object-position: 50% 30%;
+  border-radius: 10px;
+}
+
+.resSticker .stickerKey {
+  display: block;
+  padding: 6px 2px 0;
+}
+
+.stickerBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 2px 9px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.inputRow {
+  grid-column: 1 / -1;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.inputRow a {
+  flex: 0 0 84px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--tile);
+  color: inherit;
+  text-decoration: none;
+}
+
+.inputRow img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.inputRow .stickerKey {
+  display: block;
+  padding-top: 4px;
+  white-space: nowrap;
+}
+
+@media (max-width: 820px) {
+  .wideOnly {
+    display: none;
+  }
+
+  .inputRow.phoneOnly {
+    display: flex;
+  }
+
+  .stageFoot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stage.vpanel {
+    padding: 14px;
+  }
+
+  .stagePhoto.print {
+    transform: none;
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1199px) {
+  .resSticker {
+    width: 92px;
+    padding: 6px;
+  }
+
+  .resSticker img {
+    height: 62px;
+  }
+
+  .resSticker .stickerKey {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* A version that was not made: a dashed empty frame and a caption that says so */
+.thumbMissing {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.7);
+  border-radius: 14px;
+}
+
+.thumbCap > span {
+  display: block;
+}
+
+.thumbCap > span + span {
+  font-weight: 600;
+}
+
+/* Below 1200 px the stickers take their own row, and the filmstrip wraps, so versions from before a fix stay in view */
+@media (max-width: 1199px) {
+  .stageFoot > .filmstrip {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+@media (min-width: 821px) and (max-width: 1199px) {
+  .stageFoot {
+    grid-template-columns: auto auto 1fr;
+  }
+}
+
+/* Phone: the moment and every selfie fit in one row */
+.inputRow a {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 84px;
+}
+
+.inputRow img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+@media (max-width: 820px) {
+  .stageFoot > .filmstrip {
+    grid-row: auto;
+  }
+}
+
+.inputRow .stickerKey {
+  white-space: normal;
+  line-height: 1.2;
+}
+
+/* Phone top bar: the name and Log out on one row, the step control under them */
+@media (max-width: 820px) {
+  .headRight {
+    display: contents;
+  }
+
+  .logOut {
+    order: 1;
+  }
+
+  .steps {
+    order: 2;
+  }
+
+}
+
+/* The orbit runs round the head on the white ground, so it is violet there */
+.heroStage .orbit ellipse {
+  stroke: var(--violet);
+}
+
+.heroStage .orbit circle {
+  fill: var(--violet);
+}
+
+/* Step 1 and phone: the panel edge stays under the chin of the hero person */
+
+@media (max-width: 820px) {
+  .heroStage .heroPanel {
+    height: 215px;
+  }
+
+  .heroStage .heroPerson {
+    height: 380px;
+  }
+
+}
+
+@media (max-width: 820px) {
+  .heroResult {
+    max-height: 420px;
+  }
+}
+
+/*
+ * Hero motion, first screen only. Three parts:
+ * 1. Build-in (about 2.6 s): words go blur to sharp, the panel rises, strokes paint in, the person
+ *    rises out of the panel, the orbit draws, the stickers drop, the note writes itself.
+ * 2. Idle loops: they start when HeroMotion puts .heroIdle on the drift layer, the stage's first child.
+ * 3. Depth shift: HeroMotion writes --mx and --my (-1 to 1); each layer moves by its depth.
+ * Reduced motion turns all of it off at the end of this block.
+ */
+.heroStage {
+  --mx: 0;
+  --my: 0;
+}
+
+.heroWords {
+  translate: calc(var(--mx) * -10px) calc(var(--my) * -6px);
+}
+
+.heroStage > .spark {
+  translate: calc(var(--mx) * -14px) calc(var(--my) * -8px);
+}
+
+.heroPanel {
+  translate: calc(var(--mx) * 6px) calc(var(--my) * 4px);
+}
+
+.heroStage .orbit {
+  translate: calc(var(--mx) * 12px) calc(var(--my) * 8px);
+}
+
+.heroPerson {
+  translate: calc(var(--mx) * 16px) calc(var(--my) * 10px + var(--fy));
+}
+
+.heroInputs .sticker {
+  translate: calc(var(--mx) * 26px) calc(var(--my) * 16px);
+  rotate: var(--sway);
+}
+
+.heroNote {
+  translate: calc(var(--mx) * 22px) calc(var(--my) * 14px);
+}
+
+/* The panel's light follows --gx and --gy, so the idle loop can move it */
+.heroPanel::before {
+  background: radial-gradient(420px 300px at var(--gx) var(--gy), rgb(255 255 255 / 0.22), transparent 70%);
+}
+
+/* The orbit dot rests on the ring's right end; the idle loop sends it round */
+.orbitX {
+  transform: translateX(var(--rx));
+}
+
+.orbit circle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.orbit ellipse {
+  stroke-dasharray: 1;
+}
+
+/* Drifting sparks and the big soft one that passes close to the camera */
+.heroDrift {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  translate: calc(var(--mx) * 34px) calc(var(--my) * 22px);
+}
+
+.heroDrift svg {
+  position: absolute;
+  overflow: visible;
+  opacity: 0;
+  animation: driftSpark 9s ease-in-out infinite;
+}
+
+.heroNear {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  color: var(--violet-200);
+  opacity: 0;
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+@keyframes driftSpark {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.4);
+    opacity: 0;
+  }
+  25% {
+    transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.2 + 14px)) rotate(40deg) scale(1);
+    opacity: 0.95;
+  }
+  55% {
+    transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6 - 10px)) rotate(90deg) scale(0.6);
+    opacity: 0.7;
+  }
+  80% {
+    transform: translate(calc(var(--dx) * 0.85), calc(var(--dy) * 0.8 + 8px)) rotate(140deg) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(180deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* 1. Build-in. Fill mode backwards: each part holds its start state during its delay, then lets go,
+   so the depth shift and the idle loops own the same properties afterwards. */
+.heroWordsL span {
+  animation: heroBlurIn 0.7s var(--ease-out) 0.1s backwards;
+}
+
+.heroWordsL b {
+  animation: heroBlurIn 0.8s var(--ease-out) 0.3s backwards;
+}
+
+.heroWordsR span {
+  animation: heroBlurIn 0.7s var(--ease-out) 0.55s backwards;
+}
+
+.heroWordsR b {
+  animation: heroBlurIn 0.8s var(--ease-out) 0.75s backwards;
+}
+
+.heroStage .heroPanel {
+  animation: heroRise 0.8s var(--ease-out) 0.2s backwards;
+}
+
+.heroStage .brush {
+  animation: heroPaint 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.45s backwards;
+}
+
+.heroPanel .brush:nth-child(2) {
+  animation-delay: 0.58s;
+}
+
+.heroPanel .brush:nth-child(3) {
+  animation-delay: 0.71s;
+}
+
+.heroPanel .brush:nth-child(4) {
+  animation-delay: 0.84s;
+}
+
+.heroPanel .brush:nth-child(5) {
+  animation-delay: 0.97s;
+}
+
+.heroStage .heroPerson {
+  animation: heroPersonIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.75s backwards;
+}
+
+.heroStage .orbit ellipse {
+  animation: heroDraw 0.9s var(--ease-out) 1.25s backwards;
+}
+
+.heroStage .orbit circle {
+  animation: heroPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 1.9s backwards;
+}
+
+/* The code form is in place by 0.9 s, and opacity never blocks typing */
+.heroCopy > * {
+  animation: heroUp 0.6s var(--ease-out) 0.3s backwards;
+}
+
+.heroCopy > :nth-child(2) {
+  animation-delay: 0.38s;
+}
+
+.heroCopy > :nth-child(3) {
+  animation-delay: 0.46s;
+}
+
+.heroCopy > :nth-child(4) {
+  animation-delay: 0.54s;
+}
+
+.heroInputs .heroMoment {
+  animation: heroDrop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.35s backwards;
+}
+
+.heroInputs .heroYou {
+  animation: heroDrop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s backwards;
+}
+
+.heroStage > .spark {
+  animation: heroPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.6s backwards;
+}
+
+.heroStage .heroNote {
+  animation: heroWrite 0.9s steps(18) 1.95s backwards;
+}
+
+.heroStage .heroProof {
+  animation: heroUp 0.5s var(--ease-out) 2.1s backwards;
+}
+
+@keyframes heroBlurIn {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    translate: 0 22px;
+  }
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    translate: 0 70px;
+  }
+}
+
+@keyframes heroPaint {
+  from {
+    clip-path: inset(-20% 100% -20% -2%);
+  }
+  to {
+    clip-path: inset(-20% -2% -20% -2%);
+  }
+}
+
+@keyframes heroPersonIn {
+  from {
+    opacity: 0;
+    translate: 0 140px;
+    scale: 0.94;
+    filter: drop-shadow(0 24px 24px rgb(22 19 28 / 0.22)) blur(10px);
+  }
+}
+
+@keyframes heroDraw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes heroPop {
+  from {
+    opacity: 0;
+    scale: 0;
+    rotate: -90deg;
+  }
+}
+
+@keyframes heroUp {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+@keyframes heroDrop {
+  from {
+    opacity: 0;
+    translate: 0 -60px;
+    rotate: 18deg;
+    scale: 0.8;
+  }
+}
+
+@keyframes heroWrite {
+  from {
+    clip-path: inset(-30% 100% -30% -30%);
+  }
+  to {
+    clip-path: inset(-30% -30% -30% -30%);
+  }
+}
+
+/* 2. Idle loops, after the build-in */
+.heroIdle ~ .heroPerson {
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+.heroIdle ~ .spark {
+  animation: heroTwinkle 3.2s ease-in-out infinite;
+}
+
+.heroIdle ~ .spark ~ .spark {
+  animation-delay: -1.4s;
+}
+
+.heroIdle ~ .heroPanel .brush {
+  animation: heroBreathe 4s ease-in-out infinite alternate;
+}
+
+.heroIdle ~ .heroPanel .brush:nth-child(even) {
+  animation-delay: -2s;
+}
+
+.heroIdle ~ .heroPanel::before {
+  animation: heroGlow 14s ease-in-out infinite;
+}
+
+/* Two eased moves a quarter loop apart trace the ring: x left and right, y up and down */
+.heroIdle ~ .orbit .orbitX {
+  animation: orbitX 3.5s ease-in-out infinite alternate;
+}
+
+.heroIdle ~ .orbit .orbitY {
+  animation: orbitY 3.5s ease-in-out -1.75s infinite alternate;
+}
+
+@keyframes heroFloat {
+  50% {
+    --fy: -10px;
+  }
+}
+
+@keyframes heroSway {
+  0%,
+  100% {
+    --sway: -1.2deg;
+  }
+  50% {
+    --sway: 1.2deg;
+  }
+}
+
+@keyframes heroGlow {
+  0%,
+  100% {
+    --gx: 56%;
+    --gy: 30%;
+  }
+  33% {
+    --gx: 34%;
+    --gy: 22%;
+  }
+  66% {
+    --gx: 72%;
+    --gy: 46%;
+  }
+}
+
+@keyframes heroTwinkle {
+  0%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+  50% {
+    scale: 0.7;
+    rotate: 45deg;
+  }
+}
+
+@keyframes heroBreathe {
+  to {
+    opacity: 0.55;
+  }
+}
+
+@keyframes orbitX {
+  from {
+    transform: translateX(var(--rx));
+  }
+  to {
+    transform: translateX(calc(var(--rx) * -1));
+  }
+}
+
+@keyframes orbitY {
+  from {
+    transform: translateY(calc(var(--ry) * -1));
+  }
+  to {
+    transform: translateY(var(--ry));
+  }
+}
+
+/* Stickers sway and lift only where they are tilted cards: wider than a phone */
+@media (min-width: 821px) {
+  .heroIdle ~ .heroInputs .heroMoment {
+    animation: heroSway 7s ease-in-out infinite;
+  }
+
+  .heroIdle ~ .heroInputs .heroYou {
+    animation: heroSway 8s ease-in-out -3s infinite;
+  }
+}
+
+/* 3. With a real mouse: a sticker lifts, turns straight and grows under the pointer */
+@media (min-width: 821px) and (hover: hover) and (pointer: fine) {
+  .heroInputs .sticker {
+    transform: translateY(var(--lift, 0px)) rotate(calc(var(--tilt, 0deg) * var(--keep-tilt, 1)));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+  }
+
+  /* The tilt is set inline, so hover turns it off with a multiplier, not by overriding it */
+  .heroInputs .sticker:hover {
+    --keep-tilt: 0;
+    --lift: -12px;
+    scale: 1.06;
+    z-index: 6;
+    box-shadow: 0 26px 40px -12px rgb(40 22 96 / 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The loading mark in the Open button keeps its own reduced-motion pulse */
+  .heroStage,
+  .heroStage *:not(.chipMark, .chipMark *) {
+    animation: none !important;
+  }
+
+  .heroStage::before,
+  .heroStage *::before {
+    animation: none !important;
+  }
+
+  .heroDrift,
+  .heroNear {
+    display: none;
+  }
+
+  .heroInputs .sticker {
+    transition: none;
+  }
+}
