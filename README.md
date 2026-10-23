@@ -16,13 +16,30 @@ Aurify take-home, photo track.
 
 Needs Node 20.9+ (the floor of Next 16) and pnpm.
 
+The tests need no accounts. The app does: there is no offline mode. Before `pnpm dev`, create these and put their
+values in `.env.local`:
+
+| Setting | Where to get it |
+|---|---|
+| `ACCESS_CODE` | any code you choose; the first screen asks for it |
+| `SESSION_SECRET` | 32 or more random characters, for example from `openssl rand -hex 32` |
+| `DATABASE_URL` | a Neon Postgres database (free tier) |
+| `BLOB_READ_WRITE_TOKEN` | a Vercel Blob store with **private** access |
+| `MACHGEN_API_KEY` | MachGen, prepaid: about $0.12 per adult version |
+| `XKIRO_API_KEY` | xKiro, free tier |
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | an AWS user allowed to call Rekognition |
+
 ```sh
 pnpm install
-cp .env.example .env.local     # fill in the keys (names and uses are listed in the file)
+cp .env.example .env.local     # then fill in the values above
+pnpm db:migrate                # once: creates the tables in your Neon database
 pnpm photos                    # download the stock test photos listed in fixtures/photos/CREDITS.md
 pnpm test                      # 220 tests, no network, no keys
 pnpm dev                       # web app and API on http://localhost:3000
 ```
+
+With only `ACCESS_CODE` and `SESSION_SECRET` set, the app opens and accepts the code, but the photo upload fails:
+it needs the Blob store.
 
 Test the pipeline without the web app:
 

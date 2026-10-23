@@ -10,7 +10,9 @@ const DIR = 'fixtures/photos';
 async function main() {
   const rows = parseCredits(await readFile(path.join(DIR, 'CREDITS.md'), 'utf8'));
   let fetched = 0;
-  for (const row of rows) {
+  // Rows under public/ ship in the repository; only the test photos are fetched.
+  const fetchable = rows.filter((row) => !row.path.startsWith('public/'));
+  for (const row of fetchable) {
     const out = path.join(DIR, row.path);
     if (await stat(out).then(() => true, () => false)) continue;
     const res = await fetch(pexelsImageUrl(row.pexelsId), { headers: { 'user-agent': 'Mozilla/5.0' } });
@@ -20,7 +22,7 @@ async function main() {
     fetched++;
     console.log(`fetched ${row.path}`);
   }
-  console.log(`photos: ${fetched} fetched, ${rows.length - fetched} already present`);
+  console.log(`photos: ${fetched} fetched, ${fetchable.length - fetched} already present`);
 }
 
 main().catch((err) => {
