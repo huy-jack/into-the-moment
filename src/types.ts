@@ -29,7 +29,8 @@ export type SceneCard = {
 
 export type Route = 'adult' | 'child';
 
-// Adult route: GPT Image 2.5 on MachGen. Child route: Seedream 5.0 Lite and FLUX.2 dev, also on MachGen.
+// Both routes: GPT Image 2.5 on MachGen. Child route: Seedream 5.0 Lite for a refused version. FLUX.2 dev is kept
+// in the list so stored jobs still parse; no route uses it.
 export type ModelId = 'gpt-image-2.5-flare' | 'gpt-image-2.5-sunburst' | 'seedream-5-lite' | 'flux-2-dev';
 
 export type Quality = 'high' | 'medium';

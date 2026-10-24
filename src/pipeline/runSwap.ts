@@ -49,7 +49,8 @@ export async function runSwap(
   }
 
   const best = rankCandidates(all)[0];
-  if (needsRepair(prep.template.faceBox) && best?.path) {
+  // Same switch as the server workflow: face repair is off unless ENABLE_FACE_REPAIR=true.
+  if (process.env.ENABLE_FACE_REPAIR === 'true' && needsRepair(prep.template.faceBox) && best?.path) {
     all = [...all, await evaluate(deps, input, prep, an, await repair(deps, input, prep, an, best))];
   }
 

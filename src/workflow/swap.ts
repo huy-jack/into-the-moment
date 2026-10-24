@@ -4,7 +4,7 @@ import { loadJob, stepAnalyze, stepEvaluate, stepFail, stepFinalize, stepGenerat
 
 /**
  * One swap job as a durable workflow. Same decisions as the in-process runSwap: 2 versions in
- * parallel, a fallback on refusal when the route lists one (none today), 1 retry of A on the adult route, face repair on
+ * parallel, a fallback on refusal when the route lists one (child route: Seedream), 1 retry of A on the adult route, face repair on
  * small faces. Before any version exists, a step that ends the job has already written it as
  * failed and the workflow stops. After that, every exit finalizes with the versions already
  * paid for: the user always sees every version.
@@ -49,7 +49,8 @@ export async function swapWorkflow(jobId: string) {
     }
 
     const best = rankCandidates(all)[0];
-    if (needsRepair(prep.value.template.faceBox) && best?.path) {
+    // Face repair is off unless ENABLE_FACE_REPAIR=true: it added artifacts in tests.
+    if (process.env.ENABLE_FACE_REPAIR === 'true' && needsRepair(prep.value.template.faceBox) && best?.path) {
       const r = await stepRepair(...ctx, best);
       if (!r.ok) return await stop();
       const e = await stepEvaluate(...ctx, r.value);

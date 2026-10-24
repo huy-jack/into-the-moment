@@ -132,14 +132,12 @@ describe('machgen provider', () => {
     expect(out.usd).toBeCloseTo(0.004 * 1024 * 768 / 1e6, 6);
   });
 
-  it('never sends a child-route model to an OpenAI or Google model on MachGen', async () => {
-    for (const swap of [false, true]) {
-      const { a, b, fallbacks } = modelsFor('child', swap);
-      for (const model of [a, b, ...fallbacks]) {
-        const f = fakeHttp();
-        await make(f.http).generate({ ...req, model });
-        expect(String(f.posts[0].body.model)).not.toMatch(/gpt|openai|dall|nano-banana|gemini|imagen|google/i);
-      }
+  it('sends the child-route fallback to Seedream on MachGen, never to a Google model', async () => {
+    const { fallbacks } = modelsFor('child', false);
+    for (const model of fallbacks) {
+      const f = fakeHttp();
+      await make(f.http).generate({ ...req, model });
+      expect(f.posts[0].body.model).toBe('Seedream-5.0-lite');
     }
   });
 

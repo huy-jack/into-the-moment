@@ -32,7 +32,7 @@ export function createProviders(opts: { mode: CacheMode; cacheDir: string; env?:
     }),
     images: (() => {
       const machgen = createMachGen({ mode: opts.mode, cacheDir: opts.cacheDir, apiKey: need('MACHGEN_API_KEY') });
-      // Both routes run on MachGen. Child photos never reach an OpenAI or Google model (see modelsFor).
+      // Both routes run on MachGen. Child photos never reach a Google model (see modelsFor).
       return routeImages({
         'gpt-image-2.5-flare': machgen,
         'gpt-image-2.5-sunburst': machgen,

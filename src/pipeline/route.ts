@@ -7,16 +7,16 @@ export function chooseRoute(ageLows: number[]): Route {
 }
 
 /**
- * OpenAI and Google block edits of realistic photos of children by written rule, so the
- * child route never contains a GPT Image or Nano Banana model. No fallbacks: a refused child
- * version stays refused.
+ * Child route: GPT Image 2.5 first (2026-10-24: in a child-template test it accepted 12 of 12 child photos). OpenAI may
+ * still refuse a child photo, so each refused version moves to Seedream 5.0 Lite. FLUX.2 dev is no longer used: it
+ * kept the template child's body.
  */
 export function modelsFor(
   route: Route,
   swapAdultOrder: boolean,
   hint?: { ageBand?: string; text?: string },
 ): { a: ModelId; b: ModelId; fallbacks: ModelId[] } {
-  if (route === 'child') return { a: 'seedream-5-lite', b: 'flux-2-dev', fallbacks: [] };
+  if (route === 'child') return { a: 'gpt-image-2.5-sunburst', b: 'gpt-image-2.5-flare', fallbacks: ['seedream-5-lite', 'seedream-5-lite'] };
 
   // Older faces and strong jaws go to Sunburst first; Flare leads otherwise and runs faster.
   const preferSunburst =

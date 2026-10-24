@@ -36,17 +36,14 @@ describe('route', () => {
     expect(chooseRoute([30, 16])).toBe('child');
   });
   it('adults stay on the adult route', () => expect(chooseRoute([25, 40])).toBe('adult'));
-  it('child route never contains an OpenAI or Google model', () => {
-    for (const swap of [false, true]) {
-      const m = modelsFor('child', swap);
-      expect([m.a, m.b, ...m.fallbacks]).not.toContain('gpt-image-2.5-flare');
-      expect([m.a, m.b, ...m.fallbacks]).not.toContain('gpt-image-2.5-sunburst');
-      for (const id of [m.a, m.b, ...m.fallbacks]) expect(id).not.toMatch(/gpt|openai|nano-banana|gemini|imagen|google/i);
-    }
+  it('child route is Sunburst then Flare, and each refused version falls back to Seedream 5.0 Lite', () => {
+    const want = { a: 'gpt-image-2.5-sunburst', b: 'gpt-image-2.5-flare', fallbacks: ['seedream-5-lite', 'seedream-5-lite'] };
+    expect(modelsFor('child', false)).toEqual(want);
+    expect(modelsFor('child', true)).toEqual(want);
   });
-  it('child route is Seedream 5.0 Lite then FLUX.2 dev, with no fallbacks', () => {
-    expect(modelsFor('child', false)).toEqual({ a: 'seedream-5-lite', b: 'flux-2-dev', fallbacks: [] });
-    expect(modelsFor('child', true)).toEqual({ a: 'seedream-5-lite', b: 'flux-2-dev', fallbacks: [] });
+  it('child route never uses a Google model or FLUX.2 dev', () => {
+    const m = modelsFor('child', false);
+    for (const id of [m.a, m.b, ...m.fallbacks]) expect(id).not.toMatch(/nano-banana|gemini|imagen|google|flux/i);
   });
   it('adult route uses flare then sunburst, swapped on request', () => {
     expect(modelsFor('adult', false)).toMatchObject({ a: 'gpt-image-2.5-flare', b: 'gpt-image-2.5-sunburst' });

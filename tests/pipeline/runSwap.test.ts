@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FatalError, SpendCapError } from '@/src/errors';
 import { runSwap } from '@/src/pipeline/runSwap';
 import { analyze, generateVersion, prepareInputs } from '@/src/pipeline/steps';
@@ -17,6 +17,8 @@ function spyReservations(deps: Deps): Reservation[] {
 }
 
 describe('runSwap', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
   it('adult job makes two versions and ranks them', async () => {
     const f = await makeFakes();
     const out = await runSwap(f.deps, f.input());
@@ -28,33 +30,28 @@ describe('runSwap', () => {
     expect(out.costs.length).toBeGreaterThan(0);
   });
 
-  it('child job never calls an OpenAI model', async () => {
+  it('a child job runs Sunburst and Flare first, never FLUX.2 dev', async () => {
     const f = await makeFakes({ templateAge: 9 });
     const out = await runSwap(f.deps, f.input());
     expect(out.analysis.route).toBe('child');
-    expect(f.calls.map((c) => c.model)).not.toContain('gpt-image-2.5-flare');
-    expect(f.calls.map((c) => c.model)).not.toContain('gpt-image-2.5-sunburst');
+    expect(f.calls.slice(0, 2).map((c) => c.model).sort()).toEqual(['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst']);
+    expect(f.calls.map((c) => c.model)).not.toContain('flux-2-dev');
   });
 
-  it('a child job runs Seedream 5.0 Lite and FLUX.2 dev and reserves a real price for each, repair included', async () => {
-    // A small template face, so the best version also gets a face repair.
+  it('a child job reserves a real price for each version, repair included', async () => {
+    // A small template face and repair switched on, so the best version also gets a face repair.
+    vi.stubEnv('ENABLE_FACE_REPAIR', 'true');
     const f = await makeFakes({ templateAge: 9, templateFaceBox: { left: 0.45, top: 0.1, width: 0.05, height: 0.05 } });
     const reserved = spyReservations(f.deps);
     const out = await runSwap(f.deps, f.input());
     expect(out.result.status).toBe('done');
-    expect(f.calls.slice(0, 2).map((c) => c.model).sort()).toEqual(['flux-2-dev', 'seedream-5-lite']);
-    // FLUX.2 dev takes 3 images: the template and 2 refs.
-    expect(f.calls.find((c) => c.model === 'flux-2-dev')!.images).toHaveLength(3);
     const paidImages = reserved.filter((r) => r.step.startsWith('generate') || r.step === 'repair');
     expect(paidImages.map((r) => r.step).sort()).toEqual(['generate-a', 'generate-b', 'repair']);
-    for (const r of paidImages) {
-      expect(['seedream-5-lite', 'flux-2-dev']).toContain(r.provider);
-      expect(r.estimateUsd).toBeGreaterThan(0);
-    }
+    for (const r of paidImages) expect(r.estimateUsd).toBeGreaterThan(0);
   });
 
-  it('a child job with any child model unsupported fails CHILD_UNSUPPORTED before any image call', async () => {
-    for (const unsupported of [['seedream-5-lite', 'flux-2-dev'], ['flux-2-dev']] as const) {
+  it('a child job with any child-route model unsupported fails CHILD_UNSUPPORTED before any image call', async () => {
+    for (const unsupported of [['seedream-5-lite'], ['gpt-image-2.5-sunburst']] as const) {
       const f = await makeFakes({ templateAge: 9, unsupported: [...unsupported] });
       const err = await runSwap(f.deps, f.input()).catch((e) => e);
       expect(err).toBeInstanceOf(FatalError);
@@ -64,19 +61,28 @@ describe('runSwap', () => {
     }
   });
 
-  it('a refused child version has no fallback: the job finishes with the other version', async () => {
-    const f = await makeFakes({ templateAge: 9, behavior: { 'seedream-5-lite': 'refuse' } });
+  it('a refused child version moves to Seedream 5.0 Lite, and the refused one stays in the list', async () => {
+    const f = await makeFakes({ templateAge: 9, behavior: { 'gpt-image-2.5-sunburst': 'refuse' } });
     const out = await runSwap(f.deps, f.input());
-    expect(f.calls.map((c) => c.model).sort()).toEqual(['flux-2-dev', 'seedream-5-lite']);
+    expect(f.calls.map((c) => c.model).sort()).toEqual(['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst', 'seedream-5-lite']);
     expect(out.result.status).toBe('done');
+    expect(out.result.ranked.filter((c) => c.refused).map((c) => c.model)).toEqual(['gpt-image-2.5-sunburst']);
   });
 
   it('all refused gives REFUSED_ALL', async () => {
-    const f = await makeFakes({ templateAge: 9, behavior: { 'seedream-5-lite': 'refuse', 'flux-2-dev': 'refuse' } });
+    const f = await makeFakes({
+      templateAge: 9,
+      behavior: { 'gpt-image-2.5-sunburst': 'refuse', 'gpt-image-2.5-flare': 'refuse', 'seedream-5-lite': 'refuse' },
+    });
     const out = await runSwap(f.deps, f.input());
     expect(out.result).toMatchObject({ status: 'failed', code: 'REFUSED_ALL' });
     // The refusal text must survive for the README.
-    expect(out.result.ranked.filter((c) => c.refused).map((c) => c.model).sort()).toEqual(['flux-2-dev', 'seedream-5-lite']);
+    expect(out.result.ranked.filter((c) => c.refused).map((c) => c.model).sort()).toEqual([
+      'gpt-image-2.5-flare',
+      'gpt-image-2.5-sunburst',
+      'seedream-5-lite',
+      'seedream-5-lite',
+    ]);
   });
 
   it('a timeout on B still finishes with A', async () => {
@@ -161,7 +167,7 @@ describe('runSwap', () => {
     });
     const out = await runSwap(f.deps, f.input());
     expect(out.analysis.route).toBe('child');
-    expect(f.calls.map((c) => c.model)).not.toContain('gpt-image-2.5-flare');
+    expect(f.calls.slice(0, 2).map((c) => c.model).sort()).toEqual(['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst']);
     // The face to repair is the main person's face, never the bystander's.
     expect(out.prep.template.faceBox).toEqual({ left: 0.4, top: 0.1, width: 0.2, height: 0.3 });
   });
@@ -208,14 +214,23 @@ describe('runSwap', () => {
     expect(f.calls.filter((c) => c.model === 'gpt-image-2.5-sunburst')).toHaveLength(2);
   });
 
-  it('a small template face triggers repair', async () => {
+  it('a small template face triggers repair when ENABLE_FACE_REPAIR is true', async () => {
+    vi.stubEnv('ENABLE_FACE_REPAIR', 'true');
     const f = await makeFakes({ templateFaceBox: { left: 0.45, top: 0.1, width: 0.08, height: 0.1 } });
     const out = await runSwap(f.deps, f.input());
     if (out.result.status !== 'done') throw new Error('expected done');
     expect(out.result.ranked.some((c) => c.slot === 'repair')).toBe(true);
   });
 
+  it('a small template face makes no repair when the switch is off, as in the live app', async () => {
+    const f = await makeFakes({ templateFaceBox: { left: 0.45, top: 0.1, width: 0.08, height: 0.1 } });
+    const out = await runSwap(f.deps, f.input());
+    if (out.result.status !== 'done') throw new Error('expected done');
+    expect(out.result.ranked.some((c) => c.slot === 'repair')).toBe(false);
+  });
+
   it('a large template face does not trigger repair', async () => {
+    vi.stubEnv('ENABLE_FACE_REPAIR', 'true');
     const f = await makeFakes();
     const out = await runSwap(f.deps, f.input());
     if (out.result.status !== 'done') throw new Error('expected done');
